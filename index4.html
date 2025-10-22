@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CRID // ROOM_SP_5 — Обратный канал</title>
+<style>
+:root{
+  --bg:#060b12; --panel:#0d1625; --ring:#22365a; --ink:#e6eef9;
+  --muted:#94a3b8; --accent:#67e8f9; --ok:#22c55e; --err:#ef4444;
+}
+html,body{height:100%;margin:0;font:15px/1.45 "JetBrains Mono","Courier New",monospace;background:radial-gradient(1200px 800px at 70% 10%,#0f172a 0,#0a1020 60%,var(--bg) 80%);color:var(--ink);display:flex;align-items:center;justify-content:center;padding:20px;}
+.wrap{width:min(800px,94vw);background:linear-gradient(180deg,#101a34,#0b1326 60%,#0a1222);border:1px solid var(--ring);border-radius:18px;box-shadow:0 22px 70px #000a;overflow:hidden}
+header{padding:14px 20px;border-bottom:1px solid var(--ring);color:#cfe3ff;font-weight:600;letter-spacing:.06em}
+main{padding:24px}
+.prompt{background:#0a162a;border:1px solid #243a67;border-radius:14px;padding:16px;margin-bottom:14px}
+input{width:100%;padding:12px 14px;background:#0a1222;border:1px solid #253a67;border-radius:10px;color:#dbeafe;font-family:inherit;font-size:16px;text-transform:uppercase}
+input:focus{outline:none;border-color:#38bdf8;box-shadow:0 0 0 2px #38bdf833}
+.btn{margin-top:10px;padding:10px 18px;border:1px solid #2a4677;background:#13284f;color:#dbeafe;border-radius:10px;font-weight:700;cursor:pointer;transition:.25s}
+.btn:hover{filter:brightness(115%)}
+.status{margin-top:16px;min-height:28px;text-align:center;font-weight:600}
+.ok{color:var(--ok)}.err{color:var(--err)}
+.result{display:none;margin-top:20px;padding:16px;border:1px solid #1b4d3f;border-radius:14px;background:#0a2019;color:#bbf7d0;text-align:center}
+.result.show{display:block;animation:fade .6s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>CRID // ROOM_SP_5 — ОБРАТНЫЙ КАНАЛ</header>
+<main>
+  <div class="prompt">
+    <p>Сигнал Куратора фрагментирован.<br>
+    Введите ключевое слово, зафиксированное после восстановления порядка передачи данных.</p>
+  </div>
+  <input id="answer" placeholder="Введите ответ" autocomplete="off" />
+  <button class="btn" id="submit">Проверить</button>
+  <div id="status" class="status"></div>
+
+  <div class="result" id="result">
+    <b>TRACE RESTORED.</b><br>
+    Сигнал подтверждён.<br>
+    Канал связи стабилизирован.<br>
+    <br>
+    <span style="color:#94fbd3">Операция завершена. Код: КОВТУН.</span>
+  </div>
+</main>
+</div>
+
+<script>
+const OK_WORDS = ["КОВТУН","ковтун","Ковтун","KOVTUN"];
+const input = document.getElementById('answer');
+const btn = document.getElementById('submit');
+const st = document.getElementById('status');
+const result = document.getElementById('result');
+btn.addEventListener('click',check);
+input.addEventListener('keypress',e=>{if(e.key==="Enter")check();});
+function norm(s){return (s||"").trim().toUpperCase().replace(/[Ё]/g,'Е');}
+function check(){
+  const val = norm(input.value);
+  const ok = OK_WORDS.includes(val);
+  st.textContent = ok ? "Ключ подтверждён." : "Неверно. Проверьте порядок узлов.";
+  st.className = "status "+(ok?"ok":"err");
+  if(ok) result.classList.add("show");
+}
+</script>
+</body>
+</html>
